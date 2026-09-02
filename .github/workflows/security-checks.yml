@@ -17,8 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm audit --audit-level=high
+      - run: npm install --package-lock=false --ignore-scripts
+      - run: npm audit --audit-level=high --package-lock=false
         continue-on-error: true
       - run: git diff --check
