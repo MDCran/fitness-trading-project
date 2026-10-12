@@ -15,23 +15,19 @@ export const auth = async (req: CustomRequest, res: Response, next: NextFunction
       return res.status(401).send('No token provided');
     }
 
-    console.log("Token is:", token);
-    console.log("JWT Secret:", SECRET_KEY);
-
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
       if (err) {
-        console.error("JWT verification error:", err);
+        console.error("JWT verification failed");
         return res.status(401).send('Invalid token');
       }
 
-      console.log("Decoded token:", decoded);
       const userID = (decoded as JwtPayload).id as string;
       req.userID = userID;
 
       next();
     });
-  } catch (err) {
-    console.error("Authentication error:", err);
+  } catch {
+    console.error("Authentication failed");
     res.status(401).send('Please authenticate');
   }
 };
